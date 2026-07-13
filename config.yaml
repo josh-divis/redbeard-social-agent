@@ -12,7 +12,15 @@ brand:
   phone: "(602) 544-3947"
   location: "Mesa / East Valley, Arizona"
   founder: "Josh"
-  tagline: "On-call IT & cybersecurity for Arizona trades"
+  tagline: "Your on-call IT guy for Arizona trades"
+  personality: "practical tradesman, straightforward, no jargon, slightly bold when calling out nonsense, helpful dad vibe, East Valley local"
+  key_phrases:
+    - "keeps your trucks rolling"
+    - "makes insurance renewals boring"
+    - "same guy who answers the phone"
+    - "plain English"
+    - "shops like yours"
+    - "I actually show up"
 
 # Industries we speak to (rotates into prompts)
 industries:
@@ -22,7 +30,7 @@ industries:
   - Construction
   - Field service / general contractors
 
-# Service offerings to weave in naturally (not hard-sell every post)
+# Service offerings to weave in naturally
 services:
   - name: "Cyber Risk Snapshot"
     description: "60–90 minute plain-English cyber risk assessment for trade shops"
@@ -32,60 +40,58 @@ services:
 # Content pillars (weights control batch mix; must sum roughly to 1.0)
 pillars:
   problem_solution:
-    weight: 0.30
+    weight: 0.35
     label: "Problem → Solution"
     description: "A real trade-shop pain point and a practical fix"
   educational:
-    weight: 0.30
+    weight: 0.25
     label: "Educational / How-To"
     description: "Actionable tips owners and office managers can use today"
   local_bts:
-    weight: 0.20
+    weight: 0.25
     label: "Local / Behind the Scenes"
     description: "Arizona life, East Valley shops, day-in-the-life credibility"
   opinion:
-    weight: 0.20
+    weight: 0.15
     label: "Opinion / Contrarian"
-    description: "Bold but fair takes on IT, insurance, MSPs, and 'set it and forget it'"
+    description: "Bold but fair takes on IT, insurance, MSPs, and 'set it and forget it' security"
 
 # Platforms and character guidance
 platforms:
   linkedin:
     enabled: true
     max_chars: 2800
-    style: "professional but plain-spoken; short paragraphs; 1–3 hashtags max"
+    style: "professional but plain-spoken; short paragraphs; practical; uses trade analogies; ends with a soft question"
   facebook:
     enabled: true
     max_chars: 2000
-    style: "conversational; can be a bit warmer; light emoji OK (0–2)"
+    style: "conversational; warmer and local; light emoji OK (0–2); can be a bit bolder"
   instagram:
     enabled: true
     max_chars: 2200
-    style: "punchy hook first; line breaks; 5–12 hashtags at end; CTA soft"
+    style: "punchy hook first; short lines; relatable; 6–10 hashtags at end; CTA soft"
 
-# Batch generation defaults (semi-automatic twice per week)
+# Batch generation defaults
 generation:
-  posts_per_batch: 12          # total posts across platforms/pillars
-  variants_per_idea: 1         # platform-specific rewrite of each idea
-  temperature: 0.75
-  max_tokens: 900
-  # Days cron should fire generation (cron itself is the source of truth)
+  posts_per_batch: 10          # Easier to review in batches
+  variants_per_idea: 1
+  temperature: 0.78
+  max_tokens: 850
   schedule_days:
     - monday
     - thursday
-  schedule_time_local: "08:00" # America/Phoenix recommended on the Pi
+  schedule_time_local: "08:00"
   timezone: "America/Phoenix"
 
 # Safety rails — v1 never auto-posts
 safety:
   require_human_approval: true
   auto_post_enabled: false
-  # Approved posts can be exported as copy-paste packs or JSON for manual publish
   export_on_approve: true
 
 # Logging
 logging:
   level: INFO
   file: "logs/agent.log"
-  max_bytes: 5242880   # 5 MB
+  max_bytes: 5242880
   backup_count: 5
