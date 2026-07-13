@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}{{ batch.label }}{% endblock %}
+
+{% block content %}
+  <p><a href="{{ url_for('index') }}">← All batches</a></p>
+  <h1>{{ batch.label or batch.id }}</h1>
+  <p class="lead">
+    Created {{ batch.created_at[:19] }}
+    · <span class="id">{{ batch.id }}</span>
+  </p>
+
+  <div class="stats" style="margin-bottom: 1rem;">
+    <span class="pill draft">{{ counts.get('draft', 0) }} draft</span>
+    <span class="pill approved">{{ counts.get('approved', 0) }} approved</span>
+    <span class="pill rejected">{{ counts.get('rejected', 0) }} rejected</span>
+    <span class="pill exported">{{ counts.get('exported', 0) }} exported</span>
+    <span class="pill">{{ counts.get('total', 0) }} total</span>
+  </div>
+
+  <div class="toolbar">
+    <form class="filters" method="get">
+      <label>
+        Status
+        <select name="status" onchange="this.form.submit()">
+          {% for s in ['all', 'draft', 'approved', 'rejected', 'exported'] %}
+            <option value="{{ s }}" {% if status_filter == s %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        Platform
+        <select name="platform" onchange="this.form.submit()">
+          {% for p in ['all', 'linkedin', 'facebook', 'instagram'] %}
+            <option value="{{ p }}" {% if platform_filter == p %}selected{% endif %}>{{ p }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </form>
+
+    <form method="post" action="{{ url_for('export_batch', batch_id=batch.id) }}">
+      <button class="btn btn-ghost btn-sm" type="submit"
+              onclick="return confirm('Export all APPROVED posts in this batch?');">
+        Export approved (copy-paste pack)
+      </button>
+    </form>
+  </div>
+
+  <form method="post" action="{{ url_for('bulk_action', batch_id=batch.id) }}">
+    <div class="bulk-bar">
+      <strong>Bulk:</strong>
+      <button class="btn btn-ok btn-sm" name="action" value="approve" type="submit">Approve selected</button>
+      <button class="btn btn-warn btn-sm" name="action" value="reject" type="submit">Reject selected</button>
+      <button class="btn btn-ghost btn-sm" name="action" value="reset" type="submit">Reset to draft</button>
+      <label style="margin-left:auto;font-size:0.85rem;color:var(--muted);">
+        <input type="checkbox" id="select-all"> Select all visible
+      </label>
+    </div>
+
+    {% if not posts %}
+      <div class="card"><p class="meta">No posts match this filter.</p></div>
+    {% else %}
+      <div class="post-list">
+        {% for post in posts %}
+          <article class="post-item {% if post.title.startswith('[GENERATION') %}failed{% endif %}">
+            <div class="post-head">
+              <div style="display:flex;gap:0.5rem;align-items:flex-start;">
+                <input class="check-col post-check" type="checkbox" name="post_ids" value="{{ post.id }}">
+                <div>
+                  <h2 class="post-title">{{ post.title }}</h2>
+                  <div class="stats">
+                    <span class="pill platform">{{ post.platform }}</span>
+                    <span class="pill pillar">{{ post.pillar }}</span>
+                    <span class="pill">{{ post.industry }}</span>
+                    <span class="pill {{ post.status }}">{{ post.status }}</span>
+                  </div>
+                </div>
+              </div>
+              <a class="btn btn-ghost btn-sm" href="{{ url_for('post_detail', batch_id=batch.id, post_id=post.id) }}">Open</a>
+            </div>
+
+            {% if post.extra and post.extra.get('seed_angle') %}
+              <div class="seed">Angle: {{ post.extra.seed_angle }}</div>
+            {% endif %}
+
+            <div class="post-body">{{ post.body }}</div>
+
+            {% if post.hashtags %}
+              <div class="hashtags">
+                {% for t in post.hashtags %}#{{ t }} {% endfor %}
+              </div>
+            {% endif %}
+
+            {% if post.cta %}
+              <div class="meta">CTA: {{ post.cta }}</div>
+            {% endif %}
+
+            <div class="btn-row" style="margin-top:0.65rem;">
+              <!-- Per-post quick actions use separate mini forms to avoid nested forms -->
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </form>
+
+  {# Quick action forms outside the bulk form #}
+  <div class="post-list" style="margin-top:1rem;">
+    {% for post in posts %}
+      {% if post.status == 'draft' %}
+        <div class="btn-row" style="padding:0 0.25rem;">
+          <span class="meta" style="min-width:8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ post.title[:40] }}</span>
+          <form method="post" action="{{ url_for('post_action', batch_id=batch.id, post_id=post.id) }}" style="display:inline;">
+            <button class="btn btn-ok btn-sm" name="action" value="approve" type="submit">Approve</button>
+          </form>
+          <form method="post" action="{{ url_for('post_action', batch_id=batch.id, post_id=post.id) }}" style="display:inline;">
+            <button class="btn btn-warn btn-sm" name="action" value="reject" type="submit">Reject</button>
+          </form>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <script>
+    document.getElementById('select-all')?.addEventListener('change', function (e) {
+      document.querySelectorAll('.post-check').forEach(function (cb) {
+        cb.checked = e.target.checked;
+      });
+    });
+  </script>
+{% endblock %}

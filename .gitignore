@@ -1,0 +1,40 @@
+# Secrets & local config
+.env
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Runtime data (keep structure via .gitkeep)
+data/posts/*.json
+data/posts/*.jsonl
+data/logs/*
+data/exports/*
+!data/posts/.gitkeep
+!data/logs/.gitkeep
+!data/exports/.gitkeep
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local notes
+*.local.md

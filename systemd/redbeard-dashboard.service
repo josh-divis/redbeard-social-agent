@@ -1,0 +1,22 @@
+[Unit]
+Description=RedBeard Social Agent — Review Dashboard
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=__RUN_USER__
+Group=__RUN_USER__
+WorkingDirectory=__PROJECT_ROOT__
+Environment=PYTHONUNBUFFERED=1
+# Load secrets if present (systemd EnvironmentFile ignores missing with -)
+EnvironmentFile=-__PROJECT_ROOT__/.env
+ExecStart=__VENV_PY__ -m agent.cli dashboard
+Restart=on-failure
+RestartSec=5
+# Harden a bit for a home/lab Pi
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

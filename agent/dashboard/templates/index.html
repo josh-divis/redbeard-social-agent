@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Batches{% endblock %}
+
+{% block content %}
+  <h1>Content batches</h1>
+  <p class="lead">
+    Semi-automatic queue: generate twice a week, review here, export approved copy, then publish manually.
+  </p>
+
+  {% if not batches %}
+    <div class="card">
+      <h3>No batches yet</h3>
+      <p class="meta">On the Pi, run:</p>
+      <pre style="background:#f3f4f6;padding:0.75rem;border-radius:8px;overflow:auto;">python -m agent.cli generate
+# or dry-run first:
+python -m agent.cli generate --dry-run --count 6</pre>
+    </div>
+  {% else %}
+    <div class="grid">
+      {% for b in batches %}
+        {% set c = b.counts or {} %}
+        <article class="card">
+          <h3>{{ b.label or b.id }}</h3>
+          <div class="meta">{{ b.created_at[:19] if b.created_at else '' }}</div>
+          <div class="id">{{ b.id }}</div>
+          <div class="stats">
+            <span class="pill draft">{{ c.get('draft', 0) }} draft</span>
+            <span class="pill approved">{{ c.get('approved', 0) }} approved</span>
+            <span class="pill rejected">{{ c.get('rejected', 0) }} rejected</span>
+            <span class="pill">{{ c.get('total', 0) }} total</span>
+          </div>
+          <a class="btn btn-primary btn-sm" href="{{ url_for('batch_detail', batch_id=b.id) }}">
+            Review batch →
+          </a>
+        </article>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,278 @@
+/* RedBeard Risk — Review Dashboard
+   Brand: primary red #B91C1C, charcoal #111827, off-white #F8FAFC
+*/
+
+:root {
+  --red: #b91c1c;
+  --red-dark: #991b1b;
+  --charcoal: #111827;
+  --slate: #374151;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --ok: #15803d;
+  --warn: #b45309;
+  --err: #b91c1c;
+  --draft: #1d4ed8;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(17, 24, 39, 0.08), 0 4px 16px rgba(17, 24, 39, 0.04);
+  --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--charcoal);
+  line-height: 1.5;
+}
+
+a { color: var(--red); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 3rem;
+}
+
+/* Header */
+.topbar {
+  background: var(--charcoal);
+  color: #fff;
+  border-bottom: 3px solid var(--red);
+}
+.topbar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-decoration: none;
+}
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--red);
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+.brand span.sub {
+  display: block;
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+.nav-links { display: flex; gap: 1rem; align-items: center; font-size: 0.9rem; }
+.nav-links a { color: #e5e7eb; }
+.badge-safe {
+  background: #14532d;
+  color: #bbf7d0;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Cards & layout */
+h1 { font-size: 1.6rem; margin: 0 0 0.35rem; }
+h2 { font-size: 1.2rem; margin: 0 0 0.5rem; }
+.lead { color: var(--muted); margin: 0 0 1.25rem; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.1rem 1.15rem;
+}
+
+.card h3 { margin: 0 0 0.35rem; font-size: 1rem; }
+.card .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.75rem; }
+.card .id { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.75rem; color: var(--slate); word-break: break-all; }
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.75rem 0;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: var(--slate);
+  font-weight: 600;
+}
+.pill.draft { background: #dbeafe; color: #1e40af; }
+.pill.approved { background: #dcfce7; color: #166534; }
+.pill.rejected { background: #fee2e2; color: #991b1b; }
+.pill.exported { background: #fef3c7; color: #92400e; }
+.pill.platform { background: #ede9fe; color: #5b21b6; }
+.pill.pillar { background: #ffedd5; color: #9a3412; }
+
+/* Flash messages */
+.flashes { list-style: none; padding: 0; margin: 0 0 1rem; }
+.flashes li {
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+.flashes .success { background: #dcfce7; color: #14532d; border: 1px solid #86efac; }
+.flashes .error { background: #fee2e2; color: #7f1d1d; border: 1px solid #fca5a5; }
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1.2;
+}
+.btn:hover { filter: brightness(0.95); text-decoration: none; }
+.btn-primary { background: var(--red); color: #fff; }
+.btn-primary:hover { background: var(--red-dark); color: #fff; }
+.btn-ok { background: var(--ok); color: #fff; }
+.btn-warn { background: var(--warn); color: #fff; }
+.btn-ghost {
+  background: transparent;
+  color: var(--slate);
+  border: 1px solid var(--border);
+}
+.btn-sm { padding: 0.35rem 0.65rem; font-size: 0.8rem; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; }
+
+/* Filters */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.filters { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.filters select, .filters input, textarea, input[type="password"], input[type="text"] {
+  font: inherit;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+}
+textarea { width: 100%; min-height: 70px; resize: vertical; }
+
+/* Post list */
+.post-list { display: flex; flex-direction: column; gap: 0.85rem; }
+
+.post-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.1rem;
+}
+.post-item.failed { border-color: #fca5a5; background: #fff7f7; }
+.post-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.post-title { font-weight: 700; margin: 0; font-size: 1rem; }
+.post-body {
+  white-space: pre-wrap;
+  font-size: 0.95rem;
+  color: var(--charcoal);
+  background: #f9fafb;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.85rem;
+  margin: 0.6rem 0;
+  max-height: 280px;
+  overflow: auto;
+}
+.hashtags { color: var(--muted); font-size: 0.85rem; }
+.seed { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+
+/* Login */
+.login-wrap {
+  min-height: 70vh;
+  display: grid;
+  place-items: center;
+}
+.login-card {
+  width: min(400px, 100%);
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 1.75rem;
+}
+.login-card h1 { font-size: 1.35rem; }
+.login-card label { display: block; font-size: 0.85rem; font-weight: 600; margin: 0.75rem 0 0.3rem; }
+.login-card input[type="password"] { width: 100%; }
+.login-card .btn { width: 100%; margin-top: 1rem; }
+.error-text { color: var(--err); font-size: 0.85rem; margin-top: 0.5rem; }
+
+/* Checkbox bulk */
+.bulk-bar {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.check-col { margin-right: 0.5rem; }
+
+footer.site-foot {
+  max-width: 1100px;
+  margin: 2rem auto 0;
+  padding: 1rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .post-body { max-height: 200px; }
+}

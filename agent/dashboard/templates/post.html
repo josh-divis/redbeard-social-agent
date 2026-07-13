@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+  <p>
+    <a href="{{ url_for('batch_detail', batch_id=batch.id) }}">← Back to batch</a>
+  </p>
+
+  <h1>{{ post.title }}</h1>
+  <div class="stats" style="margin-bottom:1rem;">
+    <span class="pill platform">{{ post.platform }}</span>
+    <span class="pill pillar">{{ post.pillar }}</span>
+    <span class="pill">{{ post.industry }}</span>
+    <span class="pill {{ post.status }}">{{ post.status }}</span>
+  </div>
+
+  <div class="card">
+    <div class="meta">Post ID: <code>{{ post.id }}</code></div>
+    <div class="meta">Model: {{ post.model or '—' }} · Prompt v{{ post.prompt_version }}</div>
+    {% if post.extra and post.extra.get('seed_angle') %}
+      <div class="seed">Seed angle: {{ post.extra.seed_angle }}</div>
+    {% endif %}
+    {% if post.extra and post.extra.get('hook') %}
+      <div class="meta">Hook: {{ post.extra.hook }}</div>
+    {% endif %}
+
+    <h2 style="margin-top:1rem;">Body (ready to paste)</h2>
+    <div class="post-body" id="copy-body">{{ post.display_text() }}</div>
+    <button class="btn btn-ghost btn-sm" type="button" onclick="copyBody()">Copy to clipboard</button>
+
+    {% if post.notes %}
+      <h2 style="margin-top:1rem;">Reviewer notes</h2>
+      <p>{{ post.notes }}</p>
+    {% endif %}
+
+    <h2 style="margin-top:1.25rem;">Review</h2>
+    <form method="post" action="{{ url_for('post_action', batch_id=batch.id, post_id=post.id) }}">
+      <label for="notes" style="font-size:0.85rem;font-weight:600;">Notes (optional)</label>
+      <textarea id="notes" name="notes" placeholder="Why approve/reject? Feedback for next batch…">{{ post.notes }}</textarea>
+      <div class="btn-row" style="margin-top:0.75rem;">
+        <button class="btn btn-ok" name="action" value="approve" type="submit">Approve</button>
+        <button class="btn btn-warn" name="action" value="reject" type="submit">Reject</button>
+        <button class="btn btn-ghost" name="action" value="reset" type="submit">Reset to draft</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function copyBody() {
+      const text = document.getElementById('copy-body').innerText;
+      navigator.clipboard.writeText(text).then(() => alert('Copied!')).catch(() => {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        alert('Copied!');
+      });
+    }
+  </script>
+{% endblock %}

@@ -1,0 +1,24 @@
+# RedBeard Social Agent — Python dependencies
+# Tested on Python 3.11+ (Raspberry Pi OS Bookworm / Pi 5)
+
+# Web dashboard
+Flask>=3.0.0,<4.0.0
+Werkzeug>=3.0.0,<4.0.0
+
+# Config & environment
+python-dotenv>=1.0.0,<2.0.0
+PyYAML>=6.0.0,<7.0.0
+
+# OpenAI-compatible client (works with xAI Grok API)
+openai>=1.40.0,<2.0.0
+
+# CLI
+click>=8.1.0,<9.0.0
+rich>=13.7.0,<14.0.0
+
+# Scheduling helpers (cron is primary; this is optional in-process)
+APScheduler>=3.10.0,<4.0.0
+
+# Reliability
+tenacity>=8.2.0,<9.0.0
+requests>=2.31.0,<3.0.0
